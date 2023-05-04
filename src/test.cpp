@@ -1,4 +1,4 @@
-#include "mocutils"
+#include "mocutils.h"
 
 int main() {
   moc::hello();

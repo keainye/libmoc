@@ -1,0 +1,11 @@
+[
+{
+  "directory": "c:\\Users\\shift\\Projects\\mocutils",
+  "arguments": ["c:\\ProgramData\\chocolatey\\lib\\mingw\\tools\\install\\mingw64\\bin\\x86_64-w64-mingw32-g++.exe", "-c", "-m64", "-fvisibility=hidden", "-fvisibility-inlines-hidden", "-O3", "-DNDEBUG", "-o", "build\\.objs\\moctest\\mingw\\x86_64\\release\\src\\test.cc.obj", "src\\test.cc"],
+  "file": "src\\test.cc"
+},
+{
+  "directory": "c:\\Users\\shift\\Projects\\mocutils",
+  "arguments": ["c:\\ProgramData\\chocolatey\\lib\\mingw\\tools\\install\\mingw64\\bin\\x86_64-w64-mingw32-g++.exe", "-c", "-m64", "-fvisibility=hidden", "-fvisibility-inlines-hidden", "-O3", "-Isrc", "-DNDEBUG", "-o", "build\\.objs\\mocutils\\mingw\\x86_64\\release\\src\\mocutils.cc.obj", "src\\mocutils.cc"],
+  "file": "src\\mocutils.cc"
+}]

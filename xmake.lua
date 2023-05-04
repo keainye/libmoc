@@ -2,7 +2,7 @@ add_rules("mode.debug", "mode.release")
 
 target("mocutils")
     set_kind("static")
-    add_includedirs("src")
+    add_includedirs({"src"})
     add_files("src/mocutils.cc")
 
 target("moctest")

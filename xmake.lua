@@ -1,10 +1,9 @@
 add_rules("mode.debug", "mode.release")
 
-add_headerfiles("src/mocutils")
-
 target("mocutils")
     set_kind("static")
     add_files("src/mocutils.cc")
+    add_headerfiles("src/mocutils")
 
 target("moctest")
   set_kind("binary")

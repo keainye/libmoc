@@ -4,6 +4,7 @@ target("mocutils")
     set_kind("static")
     add_files("src/mocutils.cc")
     add_files("src/strings.cc")
+    add_files("src/serializable.cc")
 
 target("moctest")
   set_kind("binary")

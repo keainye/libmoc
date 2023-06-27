@@ -1,33 +1,28 @@
-#include "../src/mocutils.h"
-#include "cstdlib"
-#include "iostream"
+#include "test.h"
+#include "../src/byte.h"
 
 using namespace std;
 using namespace moc;
 
 int main() {
-  bytes b(10);
+  bytes b(4);
+  b[0] = '0';
+  b[1] = '1';
+  b[2] = '2';
+  b[3] = 0;
 
-  for (int i = 0; i < 10; i++)
-    b[i] = i;
+  test(b.to_string() == "012");
+  pass("to_string(bytes&)");
 
-  for (int i = 0; i < 10; i++)
-    if (b[i] != i)
-      exit(1);
+  test(bytes("012") == b);
+  pass("to_bytes(std::string&)");
 
-  for (int i = 0; i < 10; i++)
-    b[i]++;
+  test(b.range(0, 3)+bytes("345") == bytes("012345"));
+  pass("bytes& operator+(const bytes&, const bytes&)");
 
-  for (int i = 0; i < 10; i++)
-    if (b[i] != i + 1)
-      exit(2);
-
-  for (int i = 0; i < 10; i++)
-    b[i]--;
-
-  for (int i = 0; i < 10; i++)
-    if (b[i] != i)
-      exit(3);
+  b = bytes("012345");
+  test(b.range(3, 7) == bytes("345"));
+  pass("bytes range(bytes&, int, int)");
 
   return 0;
 }

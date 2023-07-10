@@ -13,6 +13,7 @@ class bytes : public std::vector<byte> {
   bytes();
   bytes(int _len);
   bytes(std::string _src);
+  bytes(const void* _addr, int _len);
   bytes range(int start, int end);
   std::string to_string();
   bytes operator+(const bytes& other);
@@ -22,6 +23,7 @@ class bytes : public std::vector<byte> {
   long next_int32();
   void print_as_hex();
   void println_as_hex();
+  void to_mem(void* _addr, int _len);
 };
 }  // namespace moc
 

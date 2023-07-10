@@ -11,6 +11,12 @@ moc::bytes::bytes(std::string _src) : std::vector<byte>(_src.size()+1), ptr(0) {
   this->operator[](_src.size()) = 0;
 }
 
+moc::bytes::bytes(const void* _addr, int _len) : std::vector<byte>(_len), ptr(0) {
+  const byte* addr = (const byte*) _addr;
+  for (int i = 0; i < _len; i++)
+    this->operator[](i) = addr[i];
+}
+
 moc::bytes moc::bytes::range(int start, int end) {
   if (end <= start) return bytes();
   if (end > this->size()) return bytes();
@@ -89,4 +95,12 @@ long moc::bytes::next_int32() {
     ret |= ((unsigned long) this->operator[](this->ptr++)) << 24;
   }
   return (long) ret;
+}
+
+void moc::bytes::to_mem(void* _addr, int _len) {
+  if (_len > this->size())
+    return;
+  byte* addr = (byte*) _addr;
+  for (int i = 0; i < _len; i++)
+    addr[i] = this->operator[](i);
 }

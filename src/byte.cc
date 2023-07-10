@@ -79,3 +79,14 @@ std::string moc::bytes::next_string() {
     this->ptr++;
   return this->range(start, this->ptr++).to_string();
 }
+
+long moc::bytes::next_int32() {
+  if (!this->has_next()) return 0;
+  if (this->ptr + 3 >= this->size()) return 0;
+  long ret = 0;
+  for (int i = 0; i < 4; i++) {
+    ret >>= 8;
+    ret += ((long) this->operator[](this->ptr++)) << 24;
+  }
+  return ret;
+}

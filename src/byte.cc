@@ -1,11 +1,11 @@
 #include "byte.h"
 #include "iostream"
 
-moc::bytes::bytes() : std::vector<byte>() {}
+moc::bytes::bytes() : std::vector<byte>(), ptr(0) {}
 
-moc::bytes::bytes(int _len) : std::vector<byte>(_len) {}
+moc::bytes::bytes(int _len) : std::vector<byte>(_len), ptr(0) {}
 
-moc::bytes::bytes(std::string _src) : std::vector<byte>(_src.size()+1) {
+moc::bytes::bytes(std::string _src) : std::vector<byte>(_src.size()+1), ptr(0) {
   for (int i = 0; i < _src.size(); i++)
     this->operator[](i) = _src[i];
   this->operator[](_src.size()) = 0;

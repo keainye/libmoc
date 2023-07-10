@@ -8,6 +8,7 @@ namespace moc {
 typedef unsigned char byte;
 
 class bytes : public std::vector<byte> {
+  unsigned ptr;
  public:
   bytes();
   bytes(int _len);
@@ -16,6 +17,7 @@ class bytes : public std::vector<byte> {
   std::string to_string();
   bytes operator+(const bytes& other);
   std::string to_hex_str();
+  std::string next_string();
   void print_as_hex();
   void println_as_hex();
 };

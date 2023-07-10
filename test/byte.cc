@@ -24,6 +24,15 @@ int main() {
   test(b.range(3, 7) == bytes("345"));
   pass("bytes range(bytes&, int, int)");
 
+  b[3] = 0;
+  test(b.has_next());
+  test(b.next_string() == "012");
+  test(b.next_string() == "45");
+  pass("b.next_string()");
+
+  test(!b.has_next());
+  pass("b.has_next()");
+
   bytes hex(3);
   hex[0] = 0xA1;
   hex[1] = 0xB2;

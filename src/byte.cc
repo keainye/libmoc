@@ -71,3 +71,11 @@ void moc::bytes::println_as_hex() {
 bool moc::bytes::has_next() {
   return this->ptr < this->size();
 }
+
+std::string moc::bytes::next_string() {
+  if (!this->has_next()) return "";
+  int start = this->ptr;
+  while (this->ptr < this->size() && this->operator[](this->ptr))
+    this->ptr++;
+  return this->range(start, this->ptr++).to_string();
+}

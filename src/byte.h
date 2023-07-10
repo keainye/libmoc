@@ -8,8 +8,8 @@ namespace moc {
 typedef unsigned char byte;
 
 class bytes : public std::vector<byte> {
-  unsigned ptr;
  public:
+  int ptr;
   bytes();
   bytes(int _len);
   bytes(std::string _src);

@@ -67,3 +67,7 @@ void moc::bytes::println_as_hex() {
   this->print_as_hex();
   std::cout << std::endl;
 }
+
+bool moc::bytes::has_next() {
+  return this->ptr < this->size();
+}

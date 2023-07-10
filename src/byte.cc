@@ -83,10 +83,10 @@ std::string moc::bytes::next_string() {
 long moc::bytes::next_int32() {
   if (!this->has_next()) return 0;
   if (this->ptr + 3 >= this->size()) return 0;
-  long ret = 0;
+  unsigned long ret = 0;
   for (int i = 0; i < 4; i++) {
     ret >>= 8;
-    ret += ((long) this->operator[](this->ptr++)) << 24;
+    ret |= ((unsigned long) this->operator[](this->ptr++)) << 24;
   }
-  return ret;
+  return (long) ret;
 }

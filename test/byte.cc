@@ -40,5 +40,18 @@ int main() {
   test(hex.to_hex_str() == "A1B2C3");
   pass("bytes.to_hex_str()");
 
+  b = bytes(8);
+  b[0] = 0x12;
+  b[1] = 0x34;
+  b[2] = 0x56;
+  b[3] = 0x78;
+  b[4] = 0xA1;
+  b[5] = 0xB2;
+  b[6] = 0xC3;
+  b[7] = 0xD4;
+  test(b.next_int32() == 0x78563412);
+  test(b.next_int32() == 0xD4C3B2A1);
+  pass("b.next_int32()");
+
   return 0;
 }

@@ -24,5 +24,12 @@ int main() {
   test(b.range(3, 7) == bytes("345"));
   pass("bytes range(bytes&, int, int)");
 
+  bytes hex(3);
+  hex[0] = 0xA1;
+  hex[1] = 0xB2;
+  hex[2] = 0xC3;
+  test(hex.to_hex_str() == "A1B2C3");
+  pass("bytes.to_hex_str()");
+
   return 0;
 }

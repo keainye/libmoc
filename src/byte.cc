@@ -59,6 +59,11 @@ void moc::bytes::operator+=(const bytes& other) {
     this->push_back(other[i]);
 }
 
+void moc::bytes::operator+=(byte other) {
+  this->ptr = min(this->ptr, this->size());
+  this->push_back(other);
+}
+
 std::string moc::bytes::to_hex_str() {
   std::string ret;
   ret.resize(2*(this->size()));

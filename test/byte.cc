@@ -23,6 +23,10 @@ int main() {
   b = bytes("test").range(0, 4);
   b += bytes("123");
   test(b == bytes("test123"));
+  b = bytes("test").range(0, 4);
+  b += '1';
+  b += 0;
+  test(b == bytes("test1"));
   pass("bytes.operator+=");
 
   b = bytes("012345");

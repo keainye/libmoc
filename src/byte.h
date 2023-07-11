@@ -18,6 +18,7 @@ class bytes : public std::vector<byte> {
   std::string to_string();
   bytes operator+(const bytes& other);
   void operator+=(const bytes& other);
+  void operator+=(byte other);
   std::string to_hex_str();
   bool has_next();
   std::string next_string();

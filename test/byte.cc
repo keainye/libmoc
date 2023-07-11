@@ -20,6 +20,11 @@ int main() {
   test(b.range(0, 3) + bytes("345") == bytes("012345"));
   pass("bytes& operator+(const bytes&, const bytes&)");
 
+  b = bytes("test").range(0, 4);
+  b += bytes("123");
+  test(b == bytes("test123"));
+  pass("bytes.operator+=");
+
   b = bytes("012345");
   test(b.range(3, 7) == bytes("345"));
   pass("bytes range(bytes&, int, int)");

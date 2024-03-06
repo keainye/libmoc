@@ -3,8 +3,8 @@ build: src/*.cc
 	ar r mocutils.a *.o
 
 install: build
-	cp src/*.h /usr/include/
-	cp mocutils.a /usr/lib/
+	cp src/*.h /usr/include/mocutils/
+	cp mocutils.a /usr/lib/mocutils/
 
 clean:
 	rm -rf *.o

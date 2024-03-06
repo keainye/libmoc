@@ -7,7 +7,7 @@ mocutils (mo-crystal utils) 是魔晶工作室内部的工具库。
 Linux
 
 ```shell
-make install
+sudo make install
 # 如果需要
 make clean
 ```

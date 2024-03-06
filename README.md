@@ -2,11 +2,21 @@
 
 mocutils (mo-crystal utils) 是魔晶工作室内部的工具库。
 
+## 安装
+
+Linux
+
+```shell
+make install
+# 如果需要
+make clean
+```
+
 ## 目前已实现
 
 **channel**
 
-简易的 gochannel。
+简易的 gochannel，可以阻塞地等待数据。
 
 ```c++
 moc::channel<bool> c;

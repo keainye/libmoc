@@ -6,7 +6,7 @@ install: build
 	@-mkdir /usr/include/mocutils
 	@-mkdir /usr/lib/mocutils
 	cp src/*.h /usr/include/mocutils/
-	cp mocutils.a /usr/lib/mocutils/
+	cp libmocutils.a /usr/lib/mocutils/
 
 clean:
 	rm -rf *.o

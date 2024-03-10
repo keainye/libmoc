@@ -1,3 +1,5 @@
+GCC_LIB_DIRS = $(wildcard /usr/lib/gcc/$(shell uname -m)-linux-gnu/*)
+
 build: src/*.cc
 	g++ -c src/*.cc
 	ar -crv libmocutils.a *.o
@@ -8,7 +10,7 @@ install: build
 	@-mkdir /usr/lib/gcc/$(shell uname -m)-linux-gnu/mocutils
 	cp src/*.h /usr/include/mocutils/
 	cp libmocutils.a /usr/lib/mocutils/
-	cp libmocutils.a /usr/lib/gcc/$(shell uname -m)-linux-gnu/mocutils/
+	$(foreach dir, $(GCC_LIB_DIRS), cp libmocutils.a $(dir)/)
 
 clean:
 	rm -rf *.o

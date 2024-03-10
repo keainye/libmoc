@@ -6,10 +6,7 @@ build: src/*.cc
 
 install: build
 	@-mkdir /usr/include/mocutils
-	@-mkdir /usr/lib/mocutils
-	@-mkdir /usr/lib/gcc/$(shell uname -m)-linux-gnu/mocutils
 	cp src/*.h /usr/include/mocutils/
-	cp libmocutils.a /usr/lib/mocutils/
 	$(foreach dir, $(GCC_LIB_DIRS), cp libmocutils.a $(dir)/)
 
 clean:

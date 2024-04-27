@@ -1,3 +1,6 @@
+#ifndef __MOC_CHANNEL_H
+#define __MOC_CHANNEL_H
+
 #include "mutex"
 
 namespace moc {
@@ -31,3 +34,5 @@ void channel<T>::operator>(T &_value) {
   this->in.unlock();
 }
 };  // namespace moc
+
+#endif

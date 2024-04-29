@@ -1,3 +1,13 @@
+ifeq ($(OS), Windows_NT)
+	rm = del
+	cp = copy
+	d  = \\
+else
+	rm = rm
+	cp = cp
+	d  = /
+endif
+
 GCC_LIB_DIRS = $(wildcard /usr/lib/gcc/$(shell uname -m)-linux-gnu/*)
 
 build: src/*.cc
@@ -15,5 +25,10 @@ uninstall:
 	-$(foreach dir, $(GCC_LIB_DIRS), rm $(dir)/libmocutils.a)
 
 clean:
-	rm -rf *.o
-	rm -rf *.a
+	$(rm) *.o
+	$(rm) *.a
+	$(rm) *.cc
+	$(rm) *.h
+
+copy:
+	$(cp) src$(d)* .

@@ -2,27 +2,32 @@ ifeq ($(OS), Windows_NT)
 	rm = del
 	cp = copy
 	d  = \\
+	mkdir = md
+	INCLUDE_DIR = C:\include
+	LIB_DIRS = C:\lib
 else
 	rm = rm
 	cp = cp
 	d  = /
+	mkdir = mkdir
+	INCLUDE_DIR = /usr/include
+	LIB_DIRS = $(wildcard /usr/lib/gcc/$(shell uname -m)-linux-gnu/*)
 endif
-
-GCC_LIB_DIRS = $(wildcard /usr/lib/gcc/$(shell uname -m)-linux-gnu/*)
 
 build: src/*.cc
 	g++ -c src/*.cc
 	ar -crv libmocutils.a *.o
 
 install: build uninstall
-	mkdir /usr/include/mocutils
-	cp src/*.h /usr/include/mocutils/
-	$(foreach dir, $(GCC_LIB_DIRS), cp libmocutils.a $(dir)/)
-	@echo "[ok] Installation finished."
+	-$(mkdir) $(INCLUDE_DIR)$(d)mocutils
+	$(cp) src$(d)*.h $(INCLUDE_DIR)$(d)mocutils$(d)
+	-$(foreach dir, $(LIB_DIRS), $(mkdir) $(dir))
+	$(foreach dir, $(LIB_DIRS), $(cp) libmocutils.a $(dir)$(d))
+	@echo [ok] Installation finished.
 
 uninstall:
-	-rm -rf /usr/include/mocutils
-	-$(foreach dir, $(GCC_LIB_DIRS), rm $(dir)/libmocutils.a)
+	-$(rm) $(INCLUDE_DIR)$(d)mocutils
+	-$(foreach dir, $(LIB_DIRS), $(rm) $(dir)$(d)libmocutils.a)
 
 clean:
 	$(rm) *.o

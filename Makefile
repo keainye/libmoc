@@ -5,6 +5,7 @@ ifeq ($(OS), Windows_NT)
 	mkdir = md
 	INCLUDE_DIR = C:\include
 	LIB_DIRS = C:\lib
+	suffix = exe
 else
 	rm = rm
 	cp = cp
@@ -12,6 +13,7 @@ else
 	mkdir = mkdir
 	INCLUDE_DIR = /usr/include
 	LIB_DIRS = $(wildcard /usr/lib/gcc/$(shell uname -m)-linux-gnu/*)
+	suffix = elf
 endif
 
 build: src/*.cc
@@ -35,5 +37,12 @@ clean:
 	$(rm) *.cc
 	$(rm) *.h
 
+test: FORCE
+	g++ -o $(t).$(suffix) test/$(t).cc src/*.cc -Isrc
+	./$(t).$(suffix)
+
 copy:
 	$(cp) src$(d)* .
+
+.PHONY: FORCE
+FORCE:

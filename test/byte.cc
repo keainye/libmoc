@@ -24,9 +24,18 @@ int main() {
   b += bytes("123");
   test(b == bytes("test123"));
   b = bytes("test").range(0, 4);
-  b += '1';
-  b += 0;
+  b += (char) '1';
+  b += (char) 0;
   test(b == bytes("test1"));
+
+  b = bytes();
+  b += std::string("hello");
+  b += (long) 233;
+  b += std::string("world");
+  test(b.next_string() == "hello");
+  test(b.next_int32() == 233);
+  test(b.next_string() == "world");
+  test(!b.has_next());
   pass("bytes.operator+=");
 
   b = bytes("012345");

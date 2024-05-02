@@ -64,13 +64,22 @@ void moc::bytes::operator+=(byte other) {
   this->push_back(other);
 }
 
+void moc::bytes::operator+=(std::string& other) {
+  this->operator+=(moc::bytes(other));
+}
+
+void moc::bytes::operator+=(long other) {
+  for (int i = 0; i < 4; ++i)
+    this->operator+=((moc::byte) (other >> (i*8)));
+}
+
 std::string moc::bytes::to_hex_str() {
   std::string ret;
   ret.resize(2*(this->size()));
   const char map[17] = "0123456789ABCDEF";
   int ptr = 0;
   for (int i = 0; i < this->size(); i++) {
-    moc::byte val = this->operator[](i);
+    unsigned char val = (unsigned char) this->operator[](i);
     ret[ptr++] = map[val>>4];
     ret[ptr++] = map[val&0x0F];
   }

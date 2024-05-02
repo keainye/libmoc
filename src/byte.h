@@ -5,7 +5,7 @@
 #include "string"
 
 namespace moc {
-typedef unsigned char byte;
+typedef char byte;
 
 class bytes : public std::vector<byte> {
  public:
@@ -19,6 +19,8 @@ class bytes : public std::vector<byte> {
   bytes operator+(const bytes& other);
   void operator+=(const bytes& other);
   void operator+=(byte other);
+  void operator+=(std::string& other);
+  void operator+=(long other);
   std::string to_hex_str();
   bool has_next();
   std::string next_string();

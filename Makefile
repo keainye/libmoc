@@ -7,13 +7,15 @@ ifeq ($(OS), Windows_NT)
 	LIB_DIRS = C:\lib
 	suffix = exe
 else
+	OS = Linux
 	rm = rm
+	force = -f
+	recursion = -r
 	cp = cp
 	d  = /
 	mkdir = mkdir
 	INCLUDE_DIR = /usr/include
 	LIB_DIRS = $(wildcard /usr/lib/gcc/$(shell uname -m)-linux-gnu/*)
-	suffix = elf
 endif
 
 build: src/*.cc
@@ -28,14 +30,14 @@ install: build uninstall
 	@echo [ok] Installation finished.
 
 uninstall:
-	-$(rm) $(INCLUDE_DIR)$(d)mocutils
+	-$(rm) $(recursion) $(INCLUDE_DIR)$(d)mocutils
 	-$(foreach dir, $(LIB_DIRS), $(rm) $(dir)$(d)libmocutils.a)
 
 clean:
-	$(rm) *.o
-	$(rm) *.a
-	$(rm) *.cc
-	$(rm) *.h
+	$(rm) $(force) *.o
+	$(rm) $(force) *.a
+	$(rm) $(force) *.cc
+	$(rm) $(force) *.h
 
 test: FORCE
 	g++ -o $(t).$(suffix) test/$(t).cc src/*.cc -Isrc

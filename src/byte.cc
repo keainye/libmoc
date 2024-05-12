@@ -73,6 +73,15 @@ void moc::bytes::operator+=(long other) {
     this->operator+=((moc::byte) (other >> (i*8)));
 }
 
+void moc::bytes::operator+=(std::map<std::string, moc::bytes> &m) {
+  this->operator+=((long) m.size());
+  for (const auto &it: m) {
+    this->operator+=(it.first);
+    this->operator+=((long) it.second.size());
+    this->operator+=(it.second);
+  }
+}
+
 std::string moc::bytes::to_hex_str() {
   std::string ret;
   ret.resize(2*(this->size()));
@@ -116,6 +125,18 @@ long moc::bytes::next_int32() {
     ret |= ((unsigned long) this->operator[](this->ptr++)) << 24;
   }
   return (long) ret;
+}
+
+std::map<std::string, moc::bytes> moc::bytes::next_map() {
+  int size = this->next_int32();
+  std::map<std::string, moc::bytes> ret;
+  while (size--) {
+    std::string key = this->next_string();
+    int len = this->next_int32();
+    ret[key] = this->range(this->ptr, this->ptr + len);
+    this->ptr += len;
+  }
+  return ret;
 }
 
 void moc::bytes::to_mem(void* _addr, int _len) {

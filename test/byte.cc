@@ -1,6 +1,8 @@
 #include "../src/byte.h"
 #include "test.h"
 
+#include <map>
+
 using namespace std;
 using namespace moc;
 
@@ -79,6 +81,24 @@ int main() {
   test(t1.b == t2.b);
   test(t1.c == t2.c);
   pass("addr cast");
+
+  map<string, bytes> m;
+  m["test1"] = bytes("str1");
+  m["test2"] = bytes("test222");
+  bytes intb;
+  intb += (long) 233;
+  m["test3"] = intb;
+  b = bytes();
+  b += string("string before");
+  b += (long) 233;
+  b += m;
+  b += string("string after");
+  test(b.next_string() == string("string before"));
+  test(b.next_int32() == 233);
+  test(b.next_map() == m);
+  test(b.next_string() == string("string after"));
+  test(!b.has_next());
+  pass("next map");
 
   return 0;
 }

@@ -1,4 +1,4 @@
-#include "log.cc"
+#include "log.h"
 
 namespace moc {
 void log(std::string msg) {

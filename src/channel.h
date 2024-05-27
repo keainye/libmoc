@@ -5,32 +5,37 @@
 #include <utility>
 #include <queue>
 #include <memory>
-#include "semaphore.h"
+#include "./semaphore.h"
 
 namespace moc {
+
+template <typename T>
+class nbchannel;
+
+template <typename T, int _cap = 0>
+class bchannel;
 
 template <typename T, int _cap = 0>
 class channel {
 public:
   int size, cap;
-  static std::shared_ptr<channel> make();
+  static std::shared_ptr<channel<T, _cap>> make() {
+    if (_cap == 0)
+      return std::shared_ptr<channel<T, _cap>>(new nbchannel<T>);
+    return std::shared_ptr<channel<T, _cap>>(new bchannel<T, _cap>);
+  }
+
+  channel(): size(0), cap(_cap) {}
   virtual void operator<<(T _value) = 0;
   virtual void operator>>(T &_value) = 0;
 };
-
-template <typename T, int _cap = 0>
-static std::shared_ptr<channel> channel::make() {
-  if (_cap == 0) 
-    return std::shared_ptr<channel>(new nbchannel<T>);
-  return std::shared_ptr<channel>(new bchannel<T, _cap>);
-}
 
 template <typename T>
 class nbchannel: public channel<T> {
   std::queue<std::pair<std::mutex*, T>*> read, write;
   std::mutex clock;
  public:
-  nbchannel(): size(0), cap(0) {}
+  nbchannel(): channel<T>() {}
   void operator<<(T _value);
   void operator>>(T &_value);
 };
@@ -80,32 +85,22 @@ void nbchannel<T>::operator>>(T &_value) {
 
 template<typename T, int _cap>
 class bchannel: public channel<T, _cap> {
-  T *content;
+  std::queue<T> content;
   std::mutex clock;
-  semaphore<_cap> full, empty(_cap);
+  semaphore<_cap> full, empty;
 public:
-  bchannel(): size(0), cap(_cap);
-  ~bchannel();
+  bchannel(): channel<T, _cap>(), empty(semaphore<_cap>(_cap)) {}
   void operator<<(T _value);
   void operator>>(T &_value);
 };
-
-template<typename T, int _cap>
-bchannel<T, _cap>::bchannel(): cap(_cap), size(0) {
-  content = new T[_cap];
-}
-
-template<typename T, int _cap>
-bchannel<T, _cap>::~bchannel() {
-  delete[] content;
-}
 
 // write
 template<typename T, int _cap>
 void bchannel<T, _cap>::operator<<(T _value) {
   empty.acquire();
   clock.lock();
-  content[size++] = _value;
+  this->size += 1;
+  content.push(_value);
   clock.unlock();
   full.release();
 }
@@ -115,7 +110,9 @@ template<typename T, int _cap>
 void bchannel<T, _cap>::operator>>(T &_value) {
   full.acquire();
   clock.lock();
-  _value = content[--size];
+  this->size -= 1;
+  _value = content.front();
+  content.pop();
   clock.unlock();
   empty.release();
 }

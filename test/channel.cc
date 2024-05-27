@@ -24,6 +24,11 @@ int main() {{
   test(c.size == 0);
   test(recv == 3);
   pass("bchannel");
+}; {
+  auto c = make_channel<int>();
+  test(c.size == 0);
+  test(c.cap == 0);
+  pass("nbchannel");
 }
   return 0;
 }

@@ -9,22 +9,10 @@
 
 namespace moc {
 
-template <typename T>
-class nbchannel;
-
-template <typename T, int _cap = 0>
-class bchannel;
-
 template <typename T, int _cap = 0>
 class channel {
 public:
   int size, cap;
-  static std::shared_ptr<channel<T, _cap>> make() {
-    if (_cap == 0)
-      return std::shared_ptr<channel<T, _cap>>(new nbchannel<T>);
-    return std::shared_ptr<channel<T, _cap>>(new bchannel<T, _cap>);
-  }
-
   channel(): size(0), cap(_cap) {}
   virtual void operator<<(T _value) = 0;
   virtual void operator>>(T &_value) = 0;
@@ -115,6 +103,16 @@ void bchannel<T, _cap>::operator>>(T &_value) {
   content.pop();
   clock.unlock();
   empty.release();
+}
+
+template <typename T>
+nbchannel<T> make() {
+  return nbchannel<T>();
+}
+
+template <typename T, int _cap>
+bchannel<T, _cap> make() {
+  return bchannel<T, _cap>();
 }
 
 };  // namespace moc

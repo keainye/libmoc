@@ -39,8 +39,9 @@ clean:
 	$(rm) $(force) *.cc
 	$(rm) $(force) *.h
 
-test: FORCE
-	g++ -o $(t).$(suffix) test/$(t).cc src/*.cc -Isrc
+t = test
+test: build
+	g++ -o $(t).$(suffix) test/$(t).cc -Isrc -L./ -lmocutils
 	./$(t).$(suffix)
 
 copy:

@@ -8,11 +8,12 @@
 namespace moc {
 
 template <int _cap>
-typedef struct {
+struct semaphore{
   int cap, val;
   std::queue<std::mutex> wait;
   std::mutex vlock, wlock;
 
+  semaphore(): cap(_cap), val(0) {}
   semaphore(int _val): cap(_cap), val(_val) {}
 
   void acquire() {
@@ -40,7 +41,7 @@ typedef struct {
     vlock.lock();
     wlock.lock();
     if (val > cap)
-      moc::paninc("internal bug: semaphore val > cap");
+      moc::panic("internal bug: semaphore val > cap");
     if (val < cap) {
       if (wait.size()) {
         wait.front().unlock();
@@ -54,7 +55,7 @@ typedef struct {
     vlock.unlock();
     local.lock();
   }
-} semaphore;
+};
 
 };
 

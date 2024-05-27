@@ -81,18 +81,17 @@ void nbchannel<T>::operator>>(T &_value) {
 template<typename T, int _cap>
 class bchannel {
   T *content;
-  int cptr;
   std::mutex clock;
   semaphore<_cap> full, empty(_cap);
 public:
-  bchannel(): size(0), cap(_cap), cptr(0);
+  bchannel(): size(0), cap(_cap);
   ~bchannel();
   void operator<<(T _value);
   void operator>>(T &_value);
 };
 
 template<typename T, int _cap>
-bchannel<T, _cap>::bchannel(): cap(_cap), size(0), cptr(0) {
+bchannel<T, _cap>::bchannel(): cap(_cap), size(0) {
   content = new T[_cap];
 }
 
@@ -101,13 +100,12 @@ bchannel<T, _cap>::~bchannel() {
   delete[] content;
 }
 
-
 // write
 template<typename T, int _cap>
 void bchannel<T, _cap>::operator<<(T _value) {
   empty.acquire();
   clock.lock();
-  content[cptr++] = _value;
+  content[size++] = _value;
   clock.unlock();
   full.release();
 }
@@ -117,7 +115,7 @@ template<typename T, int _cap>
 void bchannel<T, _cap>::operator>>(T &_value) {
   full.acquire();
   clock.lock();
-  _value = content[--cptr];
+  _value = content[--size];
   clock.unlock();
   empty.release();
 }

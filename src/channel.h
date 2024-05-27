@@ -79,7 +79,7 @@ void nbchannel<T>::operator>>(T &_value) {
 }
 
 template<typename T, int _cap>
-class bchannel {
+class bchannel: public channel<T, _cap> {
   T *content;
   std::mutex clock;
   semaphore<_cap> full, empty(_cap);

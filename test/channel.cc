@@ -5,7 +5,7 @@ using namespace std;
 using namespace moc;
 
 int main() {{
-  bchannel<int, 3> c;
+  auto c = make_channel<int, 3>();
   test(c.cap == 3);
   c << 1;
   test(c.size == 1);

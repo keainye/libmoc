@@ -38,6 +38,7 @@ clean:
 	$(rm) $(force) *.a
 	$(rm) $(force) *.cc
 	$(rm) $(force) *.h
+	$(rm) $(force) *.$(suffix)
 
 t = test
 test: build

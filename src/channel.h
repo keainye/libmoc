@@ -4,22 +4,40 @@
 #include <mutex>
 #include <utility>
 #include <queue>
+#include <memory>
 #include "semaphore.h"
 
 namespace moc {
 
-template <typename T>
+template <typename T, int _cap = 0>
 class channel {
+public:
+  int size, cap;
+  static std::shared_ptr<channel> make();
+  virtual void operator<<(T _value) = 0;
+  virtual void operator>>(T &_value) = 0;
+};
+
+template <typename T, int _cap = 0>
+static std::shared_ptr<channel> channel::make() {
+  if (_cap == 0) 
+    return std::shared_ptr<channel>(new nbchannel<T>);
+  return std::shared_ptr<channel>(new bchannel<T, _cap>);
+}
+
+template <typename T>
+class nbchannel: public channel<T> {
   std::queue<std::pair<std::mutex*, T>*> read, write;
   std::mutex clock;
  public:
+  nbchannel(): size(0), cap(0) {}
   void operator<<(T _value);
   void operator>>(T &_value);
 };
 
 // write
 template <typename T>
-void channel<T>::operator<<(T _value) {
+void nbchannel<T>::operator<<(T _value) {
   std::pair<std::mutex*, T> *local = nullptr;
   clock.lock();
   if (read.size()) {
@@ -40,7 +58,7 @@ void channel<T>::operator<<(T _value) {
 
 // read
 template <typename T>
-void channel<T>::operator>>(T &_value) {
+void nbchannel<T>::operator>>(T &_value) {
   std::pair<std::mutex*, T> *local = nullptr;
   clock.lock();
   if (write.size()) {
@@ -61,33 +79,32 @@ void channel<T>::operator>>(T &_value) {
 }
 
 template<typename T, int _cap>
-class channel {
+class bchannel {
   T *content;
   int cptr;
   std::mutex clock;
   semaphore<_cap> full, empty(_cap);
 public:
-  int cap, size;
-  channel(): cap(_cap), size(0), cptr(0);
-  ~channel();
+  bchannel(): size(0), cap(_cap), cptr(0);
+  ~bchannel();
   void operator<<(T _value);
   void operator>>(T &_value);
 };
 
 template<typename T, int _cap>
-channel<T, _cap>::channel(): cap(_cap), size(0), cptr(0) {
+bchannel<T, _cap>::bchannel(): cap(_cap), size(0), cptr(0) {
   content = new T[_cap];
 }
 
 template<typename T, int _cap>
-channel<T, _cap>::~channel() {
+bchannel<T, _cap>::~bchannel() {
   delete[] content;
 }
 
 
 // write
 template<typename T, int _cap>
-void channel<T, _cap>::operator<<(T _value) {
+void bchannel<T, _cap>::operator<<(T _value) {
   empty.acquire();
   clock.lock();
   content[cptr++] = _value;
@@ -97,7 +114,7 @@ void channel<T, _cap>::operator<<(T _value) {
 
 // read
 template<typename T, int _cap>
-void channel<T, _cap>::operator>>(T &_value) {
+void bchannel<T, _cap>::operator>>(T &_value) {
   full.acquire();
   clock.lock();
   _value = content[--cptr];

@@ -106,12 +106,12 @@ void bchannel<T, _cap>::operator>>(T &_value) {
 }
 
 template <typename T>
-nbchannel<T> make() {
+nbchannel<T> make_channel() {
   return nbchannel<T>();
 }
 
 template <typename T, int _cap>
-bchannel<T, _cap> make() {
+bchannel<T, _cap> make_channel() {
   return bchannel<T, _cap>();
 }
 

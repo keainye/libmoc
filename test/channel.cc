@@ -35,6 +35,16 @@ int main() {{
   test(c.size == 0);
   test(c.cap == 0);
   pass("nbchannel");
+}; {
+  auto c0 = makeptr(channel, int, 3);
+  auto c1 = new bchannel<int, 3>;
+  test(typeid(c0).name() == typeid(c1).name());
+  pass("makeptr macro for bchannel");
+}; {
+  auto c0 = makeptr(channel, int);
+  auto c1 = new nbchannel<int>;
+  test(typeid(c0).name() == typeid(c1).name());
+  pass("makeptr macro for nbchannel");
 }
   return 0;
 }

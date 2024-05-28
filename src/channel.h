@@ -115,6 +115,16 @@ bchannel<T, _cap> make_channel() {
   return bchannel<T, _cap>();
 }
 
+template <typename T>
+nbchannel<T>* makeptr_channel() {
+  return new nbchannel<T>;
+}
+
+template <typename T, int _cap>
+bchannel<T, _cap>* makeptr_channel() {
+  return new bchannel<T, _cap>;
+}
+
 #include "./macro.h"
 
 };  // namespace moc

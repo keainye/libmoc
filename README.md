@@ -23,6 +23,20 @@ make clean
 
 ## 目前已实现
 
+**log**
+
+log 是 `[I] ` 开头的绿色文字；warn 是 `[W] ` 开头的黄色文字；panic 是 `[E] ` 开头的红色文字，并且会导致程序异常退出。
+
+```cpp
+moc::log(std::string);
+moc::warn(std::string);
+moc::panic(std::string);
+
+moc::logf(const char *fmt, ...);
+moc::warnf(const char *fmt, ...);
+moc::panicf(const char *fmt, ...);
+```
+
 **semaphore**
 
 信号量机制。

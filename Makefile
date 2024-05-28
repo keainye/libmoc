@@ -38,10 +38,29 @@ clean:
 	$(rm) $(force) *.a
 	$(rm) $(force) *.cc
 	$(rm) $(force) *.h
+	$(rm) $(force) *.$(suffix)
 
-test: FORCE
-	g++ -o $(t).$(suffix) test/$(t).cc src/*.cc -Isrc
+build_test = g++ -o $(1).$(suffix) test/$(1).cc -Isrc -L./ -lmocutils
+
+t = all
+ifeq ($(t), all)
+test: build
+	$(call build_test,byte)
+	./byte.$(suffix)
+	$(call build_test,channel)
+	./channel.$(suffix)
+	$(call build_test,semaphore)
+	./semaphore.$(suffix)
+	@echo [ok] all unit tests passed.
+else
+test: build
+	g++ -o $(t).$(suffix) test/$(t).cc -Isrc -L./ -lmocutils
 	./$(t).$(suffix)
+endif
+
+run: build
+	g++ -o main.$(suffix) test/test.cc -Isrc -L./ -lmocutils
+	./main.$(suffix)
 
 copy:
 	$(cp) src$(d)* .

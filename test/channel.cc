@@ -5,7 +5,10 @@ using namespace std;
 using namespace moc;
 
 int main() {{
-  auto c = make_channel<int, 3>();
+  auto c = make(channel, int, 3);
+  test(typeid(c).name() == typeid(bchannel<int, 3>).name());
+  pass("make macro for bchannel");
+
   test(c.cap == 3);
   c << 1;
   test(c.size == 1);
@@ -25,7 +28,10 @@ int main() {{
   test(recv == 3);
   pass("bchannel");
 }; {
-  auto c = make_channel<int>();
+  auto c = make(channel, int);
+  test(typeid(c).name() == typeid(nbchannel<int>).name());
+  pass("make macro for nbchannel");
+
   test(c.size == 0);
   test(c.cap == 0);
   pass("nbchannel");

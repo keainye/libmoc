@@ -115,6 +115,8 @@ bchannel<T, _cap> make_channel() {
   return bchannel<T, _cap>();
 }
 
+#include "./macro.h"
+
 };  // namespace moc
 
 #endif

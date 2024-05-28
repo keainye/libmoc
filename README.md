@@ -23,6 +23,27 @@ make clean
 
 ## 目前已实现
 
+**semaphore**
+
+信号量机制。
+
+semaphore 有 val 和 cap 属性。val 是当前值，cap 是上限。val 的合法值为 [0, cap]。
+
+semaphore 有 acquire 和 release 两种功能。前者相当于 PV 操作的 P，后者相当于 PV 操作的 V。
+
+若 val 在以上两种操作后的值仍然合法，则进程不会阻塞，值会顺利改变；若本次操作会导致 val 值不合法，则该进程会阻塞，并加入等待队列，直到一个相反操作解除此阻塞。
+
+```cpp
+moc::semaphore<3> s0;    // 创建一个最大值为 3 的信号量
+moc::semaphore<3> s1(2); // 创建一个最大值为 3 的信号量，并且赋初值为 2
+
+s0.release(); // s0.val == 1
+s0.release(); // s0.val == 2
+s0.acquire(); // s0.val == 1
+s0.acquire(); // s0.val == 0
+s0.acquire(); // blocked
+```
+
 **channel**
 
 功能和 gochannel 完全相同的 channel 工具。

@@ -72,6 +72,8 @@ bchannel 的功能和用法与 nbchannel 相似。不同之处在于，bchannel 
 
 定义局部变量时，可以使用 auto 关键字来兼容两种 channel；定义参数时，可以使用 channel& 或 channel* 来兼容两种 channel。这么做可以屏蔽两种 channel 的语法差异，代码看起来会比较和谐。
 
+**注意：不要在函数调用中以值的形式传递任何 channel，可能会导致严重的内存安全和逻辑错误问题。可以使用 * 指针或 & 引用。**
+
 关于使用 channel 进行数据传输，可以参考如下代码
 
 ```c++

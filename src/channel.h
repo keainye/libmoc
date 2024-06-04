@@ -38,7 +38,7 @@ void nbchannel<T>::operator<<(T _value) {
     read.front()->first->unlock();
     read.pop();
   } else {
-    local = new std::pair{new std::mutex, _value};
+    local = new std::pair<std::mutex*, T>{new std::mutex, _value};
     local->first->lock();
     write.push(local);
   }

@@ -20,7 +20,7 @@ void logf(const char *fmt, ...) {
   va_start(args, fmt);
   std::printf("\033[32m[I] ");
   std::vprintf(fmt, args);
-  std::printf("\033[0m\n");
+  std::printf("\033[0m");
   va_end(args);
 }
 
@@ -29,7 +29,7 @@ void warnf(const char *fmt, ...) {
   va_start(args, fmt);
   std::printf("\033[33m[W] ");
   std::vprintf(fmt, args);
-  std::printf("\033[0m\n");
+  std::printf("\033[0m");
   va_end(args);
 }
 
@@ -38,7 +38,7 @@ void panicf(const char *fmt, ...) {
   va_start(args, fmt);
   std::printf("\033[31m[E] ");
   std::vprintf(fmt, args);
-  std::printf("\033[0m\n");
+  std::printf("\033[0m");
   va_end(args);
   exit(1);
 }

@@ -6,7 +6,13 @@
 namespace moc {
 
 i64 get_tick();
-void tick(i64 period_time);
+
+struct clock {
+  i64 last;
+  clock();
+  // returns ms since last leave clock.tick
+  i64 tick(i64 period_time);
+};
 
 };
 

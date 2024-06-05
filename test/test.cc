@@ -3,12 +3,10 @@
 #include <clock.h>
 
 int main() {
+  moc::clock c;
   while (true) {
-    printf("enter while\n");
-    int i = 10000;
-    while (i--);
-    printf("finish compute\n");
-    moc::tick(1000);
+    auto used = c.tick(1000);
+    printf("last frame computed for %d ms\n", used);
   }
   return 0;
 }
